@@ -1,0 +1,15 @@
+# Cache de Blade
+/cache/
+
+# Dépendances de Composer
+/vendor/
+composer.lock
+
+# Spécifique à Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Fichiers de configuration des dossiers Windows
+Desktop.ini

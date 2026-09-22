@@ -1,0 +1,14 @@
+{
+    "name": "projet/master-nombre",
+    "description": "Jeu Master Nombre en POO avec Blade",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "jenssegers/blade": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    }
+}
