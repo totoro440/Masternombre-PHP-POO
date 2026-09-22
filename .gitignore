@@ -5,6 +5,9 @@
 /vendor/
 composer.lock
 
+# Base de données
+/database/database.sqlite
+
 # Spécifique à Windows
 Thumbs.db
 Thumbs.db:encryptable
