@@ -145,6 +145,12 @@
     @if($game->isOver())
         @if($game->isVictory())
             <div class="alert success">🎉 Félicitations ! Vous avez décodé le Nombre {{$game->getRules()->getSecret()}}!</div>
+        {{-- Formulaire pour enregistrer le score --}}
+        <form method="post" style="margin-bottom: 20px;">
+            <label for="nom_joueur">Entrez votre nom pour le tableau des scores :</label>
+            <input type="text" name="nom_joueur" id="nom_joueur" required placeholder="Votre pseudo">
+            <button type="submit" name="enregistrer_score">Valider mon Score</button>
+        </form>
         @else
             <div class="alert error">💥 Dommage ! Vous avez épuisé toutes vos tentatives. Vous n'avez pas trouvé le Nombre {{$game->getRules()->getSecret()}}</div>
         @endif
@@ -184,6 +190,20 @@
             @endforeach
         </ul>
     @endif
+
+    {{-- TOUT EN BAS DE LA PAGE : TABLEAU DES TOP SCORES --}}
+    <div style="margin-top: 40px; border-top: 2px solid #ccc; padding-top: 20px;">
+        <h3>🏆 Top 3 des Meilleurs Scores</h3>
+        @if(empty($topScores))
+            <p>Aucun score enregistré pour le moment. Soyez le premier !</p>
+        @else
+            <ol>
+                @foreach($topScores as $score)
+                    <li><strong>{{ $score['nom_joueur'] }}</strong> — {{ $score['tentatives'] }} essais</li>
+                @endforeach
+            </ol>
+        @endif
+    </div>
 
 </body>
 </html>

@@ -4,8 +4,9 @@ declare(strict_types=1);
 // Point d'entrée unique de l'application
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use App\Metier\Game;
 use Jenssegers\Blade\Blade;
+use App\Metier\Game;
+use App\Metier\ScoreRepository;
 
 session_start();
 
@@ -35,8 +36,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['proposal'])) {
     }
 }
 
+
+// TRAITEMENT DU SCORE EN FIN DE PARTIE
+$scoreRepository = new ScoreRepository();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enregistrer_score'])) {
+    $nomJoueur = trim($_POST['nom_joueur'] ?? 'Anonyme');
+    
+    if ($game->isVictory() && !empty($nomJoueur)) {
+        // Le métier calcule le nombre de coups joués
+        $score = count($game->getHistorique());
+        
+        // Enregistrement via le repository
+        $scoreRepository->saveScore($nomJoueur, $score);
+        
+        // Optionnel : on réinitialise pour éviter le double envoi
+        unset($_SESSION['partie']);
+        header('Location: index.php');
+        exit;
+    }
+}
+
+// On récupère le Top 3 pour l'envoyer à la vue Blade
+$topScores = $scoreRepository->getBestScores();
+
 // Affichage final via Blade
 echo $blade->render('vue', [
     'game' => $game,
-    'errorMsg' => $errorMsg
+    'errorMsg' => $errorMsg,
+    'topScores' => $topScores
 ]);
