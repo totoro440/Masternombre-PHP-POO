@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Metier;
 
@@ -33,10 +34,11 @@ class Game
 
         $clues = $this->rules->getClues($proposal);
         
-        $this->historique[] = [
+        // Historique en commençant par la fin
+        array_unshift($this->historique,[
             'proposal' => $proposal,
             'clues'     => $clues
-        ];
+        ]);  
 
         // Règle de victoire : tous les chiffres sont bien placés
         if ($clues['well_placed'] === $this->rules->getSecretSize()) {

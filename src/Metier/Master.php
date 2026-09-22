@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Metier;
 
@@ -61,7 +62,7 @@ class Master
         return $this->secretSize;
     }
 
-    public function getSecret(): int 
+    public function getSecret(): string 
     {
         return $this->secret;
     }

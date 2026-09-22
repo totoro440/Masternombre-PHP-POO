@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 // Point d'entrée unique de l'application
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -20,7 +21,7 @@ if (!isset($_SESSION['game']) || isset($_POST['recommencer'])) {
     $_SESSION['game'] = new Game($secretAleatoire, 10);
 }
 
-/** @var Partie $partie */
+/** @var game $game */
 $game = $_SESSION['game'];
 $errorMsg = null;
 

@@ -3,24 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Nombre - Mode Professionnel</title>
+    <title>Master Nombre</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f4f9; color: #333; max-width: 600px; margin: 40px auto; padding: 20px; border-radius: 8px; background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; text-align: center; }
-        .alert { padding: 10px; border-radius: 4px; margin-bottom: 20px; font-weight: bold; }
-        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .info { background: #e2e3e5; color: #383d41; }
-        form { display: flex; gap: 10px; margin-bottom: 20px; }
-        input[type="text"] { flex: 1; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; text-align: center; letter-spacing: 5px; font-weight: bold; }
-        button { padding: 10px 20px; font-size: 16px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        button:hover { background: #2980b9; }
-        .btn-restart { background: #e67e22; width: 100%; }
-        .btn-restart:hover { background: #d35400; }
-        ul { list-style: none; padding: 0; }
-        li { padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
-        .badge { background: #2ecc71; color: white; padding: 2px 8px; border-radius: 12px; font-size: 14px; }
-        .badge-miss { background: #f1c40f; color: white; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #f4f4f9; 
+            color: #333; 
+            max-width: 600px; 
+            margin: 40px auto; 
+            padding: 20px; 
+            border-radius: 8px; 
+            background: white; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        }
+
+        h1 { 
+            color: #2c3e50; 
+            text-align: center; 
+        }
+
+        h3 {
+            color: #2c3e50;
+            margin-top: 30px;
+        }
+
+        .alert { 
+            padding: 10px; 
+            border-radius: 4px; 
+            margin-bottom: 20px; 
+            font-weight: bold; 
+        }
+
+        .alert.error { 
+            background: #f8d7da; 
+            color: #721c24; 
+            border: 1px solid #f5c6cb; 
+        }
+
+        .alert.success { 
+            background: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb; 
+        }
+
+        .alert.info { 
+            background: #e2e3e5; 
+            color: #383d41; 
+        }
+
+        form { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 20px; 
+        }
+
+        input[type="text"] { 
+            flex: 1; 
+            padding: 10px; 
+            font-size: 16px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            text-align: center; 
+            letter-spacing: 5px; 
+            font-weight: bold; 
+        }
+
+        button { 
+            padding: 10px 20px; 
+            font-size: 16px; 
+            background: #3498db; 
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-weight: bold; 
+        }
+
+        button:hover { 
+            background: #2980b9; 
+        }
+
+        .btn-restart { 
+            background: #e67e22; 
+            width: 100%; 
+        }
+
+        .btn-restart:hover { 
+            background: #d35400; 
+        }
+
+        ul { 
+            list-style: none; 
+            padding: 0; 
+        }
+
+        li { 
+            padding: 10px; 
+            border-bottom: 1px solid #eee; 
+            display: flex; 
+            justify-content: space-between; 
+        }
+
+        .badge { 
+            background: #2ecc71; 
+            color: white; 
+            padding: 2px 8px; 
+            border-radius: 12px; 
+            font-size: 14px; 
+            margin-right: 5px;
+        }
+
+        .badge.badge-miss { 
+            background: #f1c40f; 
+        }
+
+        .clue {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ffeeba;
+            border-radius: 4px;
+        }
+
+        .empty-state {
+            color: #7f8c8d;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -44,7 +153,7 @@
             <button type="submit" name="recommencer" class="btn-restart">Commencer une nouvelle partie</button>
         </form>
     @else
-        <div class="alert info">💡 Essais restants : <strong>{{ $game->getRemainingTries() }}</strong></div>
+        <div class="alert info">❤️ Essais restants : <strong>{{ $game->getRemainingTries() }}</strong></div>
         
         <form method="post" action="/">
             <input type="text" name="proposal" maxlength="5" pattern="[0-9]{5}" required autocomplete="off" autofocus placeholder="12345">
@@ -54,16 +163,14 @@
 
     @if($game->getClues() !== [])
         @foreach ($game->getClues() as $clue)
-        <div style="background-color: #fff3cd; color: #856404; padding: 15px; margin-bottom: 20px; border: 1px solid #ffeeba; border-radius: 4px;">
-            💡  {{ $clue }}
-        </div>
+            <div class="clue">💡 {{ $clue }}</div>
         @endforeach
     @endif
 
     {{-- Historique des tentatives calculées par le composant métier --}}
     <h3>📊 Historique des essais</h3>
     @if(empty($game->getHistorique()))
-        <p style="color: #7f8c8d; font-style: italic;">Aucune tentative pour le moment. Entrez un nombre ci-dessus !</p>
+        <p class="empty-state">Aucune tentative pour le moment. Entrez un nombre ci-dessus !</p>
     @else
         <ul>
             @foreach($game->getHistorique() as $coup)
