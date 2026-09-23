@@ -136,6 +136,20 @@
 
     <h1>🔢 Master Nombre</h1>
 
+    {{-- WALL OF FAME --}}
+    <div>
+        <h3>🏆 Top 3 des Meilleurs Scores</h3>
+        @if(empty($topScores))
+            <p>Aucun score enregistré pour le moment. Soyez le premier !</p>
+        @else
+            <ol>
+                @foreach($topScores as $line)
+                    <li><strong>{{ $line['nom_joueur'] }}</strong> — {{ $line['score'] }} points</li>
+                @endforeach
+            </ol>
+        @endif
+    </div>
+
     {{-- Affichage des messages d'erreur de saisie du domaine --}}
     @if($errorMsg)
         <div class="alert error">⚠️ {{ $errorMsg }}</div>
@@ -159,19 +173,22 @@
             <button type="submit" name="recommencer" class="btn-restart">Commencer une nouvelle partie</button>
         </form>
     @else
-        <div class="alert info">❤️ Essais restants : <strong>{{ $game->getRemainingTries() }}</strong></div>
-        
+    @if($game->getClues() !== [])
+        @foreach ($game->getClues() as $clue)
+            <div class="clue">💡 {{ $clue }}</div>
+        @endforeach
+    @endif
+        <div class="alert info"> Essais restant :  
+    @for ($i = 1; $i <= $game->getRemainingTries() ; $i++)
+        ❤️
+    @endfor
+        </div>    
         <form method="post" action="/">
             <input type="text" name="proposal" maxlength="5" pattern="[0-9]{5}" required autocomplete="off" autofocus placeholder="12345">
             <button type="submit">Valider</button>
         </form>
     @endif
 
-    @if($game->getClues() !== [])
-        @foreach ($game->getClues() as $clue)
-            <div class="clue">💡 {{ $clue }}</div>
-        @endforeach
-    @endif
 
     {{-- Historique des tentatives calculées par le composant métier --}}
     <h3>📊 Historique des essais</h3>
@@ -190,20 +207,6 @@
             @endforeach
         </ul>
     @endif
-
-    {{-- TOUT EN BAS DE LA PAGE : TABLEAU DES TOP SCORES --}}
-    <div style="margin-top: 40px; border-top: 2px solid #ccc; padding-top: 20px;">
-        <h3>🏆 Top 3 des Meilleurs Scores</h3>
-        @if(empty($topScores))
-            <p>Aucun score enregistré pour le moment. Soyez le premier !</p>
-        @else
-            <ol>
-                @foreach($topScores as $score)
-                    <li><strong>{{ $score['nom_joueur'] }}</strong> — {{ $score['tentatives'] }} essais</li>
-                @endforeach
-            </ol>
-        @endif
-    </div>
 
 </body>
 </html>

@@ -22,7 +22,7 @@ class ScoreRepository implements ScoreRepositoryInterface
         )");
     }
 
-    public function saveScore(string $nom, int $score): void 
+    public function save(string $nom, int $score): void 
     {
         $stmt = $this->pdo->prepare("INSERT INTO scores (nom_joueur, score) VALUES (:nom, :score)");
         $stmt->execute([

@@ -8,6 +8,16 @@ use Jenssegers\Blade\Blade;
 use App\Metier\Game;
 use App\Metier\ScoreRepository;
 
+// Configure le cookie de session pour expirer dès que le navigateur se ferme (0 = fin de session navigateur)
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path' => '/',
+    'domain' => $_SERVER['HTTP_HOST'] ?? '',
+    'secure' => false, // Mets à true si tu passes ton Docker en HTTPS plus tard
+    'httponly' => true,
+    'samesite' => 'Lax'
+]);
+
 session_start();
 
 // Configuration du moteur de templates Blade
@@ -19,7 +29,7 @@ $blade = new Blade($views, $cache);
 if (!isset($_SESSION['game']) || isset($_POST['recommencer'])) {
     // Génération technique du secret à 5 chiffres (votre fonction initiale adaptée)
     $secretAleatoire = (string)rand(10000, 99999);
-    $_SESSION['game'] = new Game($secretAleatoire, 10);
+    $_SESSION['game'] = new Game($secretAleatoire);
 }
 
 /** @var game $game */
@@ -45,10 +55,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enregistrer_score']))
     
     if ($game->isVictory() && !empty($nomJoueur)) {
         // Le métier calcule le nombre de coups joués
-        $score = count($game->getHistorique());
+        $score = $game->getScore();
         
         // Enregistrement via le repository
-        $scoreRepository->saveScore($nomJoueur, $score);
+        $scoreRepository->save($nomJoueur, $score);
         
         // Optionnel : on réinitialise pour éviter le double envoi
         unset($_SESSION['partie']);
