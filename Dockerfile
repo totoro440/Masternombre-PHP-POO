@@ -7,9 +7,6 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     && docker-php-ext-install zip
 
-# Activation du module rewrite d'Apache
-RUN a2enmod rewrite
-
 # Modification du DocumentRoot d'Apache pour pointer vers le dossier /public (Sécurité Pro)
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
@@ -20,14 +17,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# --- LES LIGNES POUR VOTRE BASE DE DONNÉES SQLITE ---
+# --- LES LIGNES POUR LA BASE DE DONNÉES SQLITE ---
 # Création du dossier et du fichier de base de données
 RUN mkdir -p /var/www/html/database \
     && touch /var/www/html/database/database.sqlite
-
-# Attribution des droits à l'utilisateur système d'Apache (www-data)
-RUN chown -R www-data:www-data /var/www/html/database \
-    && chmod -R 775 /var/www/html/database
-# ----------------------------------------------------
 
 EXPOSE 80

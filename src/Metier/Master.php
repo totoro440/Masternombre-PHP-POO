@@ -1,8 +1,5 @@
 <?php
-declare(strict_types=1);
-
 namespace App\Metier;
-
 use InvalidArgumentException;
 
 class Master
@@ -25,12 +22,25 @@ class Master
             throw new InvalidArgumentException("La proposition doit faire exactement {$this->secretSize} caractères.");
         }
 
-        $wellPlaced = 0;
-        $isPresent = 0;
-        $wordToFindP = "";
-        $wordToTryP = "";
+        // Appel des deux sous-étapes métiers isolées
+        [$wellPlaced,$wordToFindP,$wordToTryP] = $this->processWellplaced($proposal);
+        $isPresent = $this->countPresent($wordToFindP,$wordToTryP);
 
-        // Étape 1 : Analyse des éléments bien placés 
+        return [
+            'well_placed' => $wellPlaced,
+            'is_present'  => $isPresent
+        ];        
+    }
+
+    /**
+     * ÉTAPE 1 (Privée) : Analyse et masquage des éléments bien placés
+     */
+    private function processWellplaced(string $proposal): array
+    {
+        $wellPlaced = 0;
+        $wordToFindP = "";
+        $wordToTryP ="";
+
         for ($i = 0; $i < $this->secretSize; $i++) { 
             if ($this->secret[$i] === $proposal[$i]) {
                 $wellPlaced++;
@@ -42,7 +52,16 @@ class Master
             }
         }
 
-        // Étape 2 : Analyse des éléments présents mais mal placés
+        return [$wellPlaced,$wordToFindP,$wordToTryP];
+    }
+
+    /**
+     * ÉTAPE 2 (Privée) : Analyse et masquage des éléments présents mais mal placés
+     */
+    private function countPresent(string $wordToFindP,string $wordToTryP): int
+    {
+        $isPresent = 0;
+
         for ($i = 0; $i < $this->secretSize; $i++) { 
             $pos = strpos($wordToFindP, $wordToTryP[$i]); 
             if ($pos !== false) {
@@ -51,11 +70,8 @@ class Master
             }
         }
 
-        return [
-            'well_placed' => $wellPlaced,
-            'is_present'  => $isPresent
-        ];
-    }
+        return $isPresent;
+    }   
 
     public function getSecretSize(): int 
     {

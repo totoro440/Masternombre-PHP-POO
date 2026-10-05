@@ -3,7 +3,6 @@ namespace App\Metier;
 
 use PDO;
 
-// L'ajout de l'implémentation se fait ici
 class ScoreRepository implements ScoreRepositoryInterface
 {
     private PDO $pdo;
@@ -31,9 +30,9 @@ class ScoreRepository implements ScoreRepositoryInterface
         ]);
     }
 
-    public function getBestScores(): array 
+    public function getBestScores(int $nbTop = 3): array 
     {
-        $stmt = $this->pdo->query("SELECT nom_joueur, score FROM scores ORDER BY score DESC, date_partie DESC LIMIT 3");
+        $stmt = $this->pdo->query("SELECT nom_joueur, score FROM scores ORDER BY score DESC, date_partie DESC LIMIT {$nbTop}");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

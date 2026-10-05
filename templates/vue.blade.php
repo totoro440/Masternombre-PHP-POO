@@ -173,17 +173,21 @@
             <button type="submit" name="recommencer" class="btn-restart">Commencer une nouvelle partie</button>
         </form>
     @else
-    @if($game->getClues() !== [])
-        @foreach ($game->getClues() as $clue)
-            <div class="clue">💡 {{ $clue }}</div>
-        @endforeach
-    @endif
+    {{-- Affichage des indides d'aide --}}
+    @php($clues = $game->getClues())
+        @if(!empty($clues))
+            @foreach ($clues as $clue)
+                <div class="clue">💡 {{ $clue }}</div>
+            @endforeach
+        @endif
+    {{-- Affichage des essaies restants sous forme de coeurs --}}
         <div class="alert info"> Essais restant :  
-    @for ($i = 1; $i <= $game->getRemainingTries() ; $i++)
-        ❤️
-    @endfor
-        </div>    
-        <form method="post" action="/">
+            @for ($i = 1; $i <= $game->getRemainingTries() ; $i++)
+                ❤️
+            @endfor
+        </div>
+    {{-- Affichage du formulaire de tentatives --}}
+        <form method="post">
             <input type="text" name="proposal" maxlength="5" pattern="[0-9]{5}" required autocomplete="off" autofocus placeholder="12345">
             <button type="submit">Valider</button>
         </form>

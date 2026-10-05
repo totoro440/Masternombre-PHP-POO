@@ -1,8 +1,5 @@
 <?php
-declare(strict_types=1);
-
 namespace App\Metier;
-
 use Exception;
 use App\Metier\Master;
 
@@ -16,7 +13,7 @@ class Game
     private bool $victory = false;
     private int $start;
     private string $clue1;
-    private string $clue2;
+    private string $clue2 = "";
     private string $clue3;
 
     public function __construct(string $secret, int $maxAttempt = 10, int $maxTime= 3600) 
@@ -25,7 +22,7 @@ class Game
         $this->maxAttempt = $maxAttempt;
         $this->maxTime = $maxTime;
         $this->start = time();
-        $even = ($secret%2==0) ? "pair" : "impair";
+        $even = ((int)$secret % 2 === 0) ? "pair" : "impair";        
         $this->clue1 = "Le maximum d'occurence du même chiffre dans le nombre a trouvé est {$this->max_same_number()}" ;
         $this->clue3 = "Le nombre a trouvé est {$even}";
     }
@@ -53,7 +50,7 @@ class Game
         elseif (count($this->historique) >= $this->maxAttempt) {
             $this->endGame = true;
         }
-
+        // Indice du tour 6 qui dépend du nombre entré
         if(count($this->historique)===6){
             $small = ($this->rules->getSecret() > $proposal) ? "strictement grand que" : "petit ou égal à";
             $this->clue2 = "Le nombre à trouver est {$small} {$proposal}";
@@ -73,13 +70,11 @@ class Game
         // A partir du tour 3 : on révèle l'indice 1
         if ($tourActuel >= 3) {
             $clues[] = $this->clue1;
-        }
-        
+        }   
         // A partir du tour 6 : on révèle l'indice 2
         if ($tourActuel >= 6) {
             $clues[] = $this->clue2;
-        }
-        
+        }   
         // A partir du tour 6 : on révèle l'indice 3
         if ($tourActuel >= 9) {
             $clues[] = $this->clue3;
@@ -106,15 +101,12 @@ class Game
 
     /**
      * ALGORITHME MÉTIER : Calcule le score final basé sur les essais et le temps
-     * Cette méthode reste privée ou publique si vous voulez la tester isolément
      */
     private function makeScore( int $attempt, int $MaxAttempt, int $time, int $MaxTime): int
     {
 
-        // Exemple d'algorithme métier :
         // Plus il reste de coups disponibles, plus le score augmente
-        $pointsCoups = ($MaxAttempt - $attempt) * 100;
-        
+        $pointsCoups = ($MaxAttempt - $attempt) * 100;  
         // Plus le joueur a été rapide par rapport au temps max, plus il gagne de points
         $bonusTemps = 0;
         if ($time < $MaxTime) {
@@ -122,7 +114,6 @@ class Game
         }
 
         $scoreFinal = $pointsCoups + $bonusTemps;
-
         // Un score ne peut pas être négatif
         return max(0, $scoreFinal);
     }

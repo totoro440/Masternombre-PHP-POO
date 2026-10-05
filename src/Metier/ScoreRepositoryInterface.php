@@ -10,7 +10,7 @@ interface ScoreRepositoryInterface {
     public function save(string $pseudo, int $score): void;
 
     /**
-     * Récupérer le Top 3 des meilleurs scores.
+     * Récupérer le Top 3 ou autres des meilleurs scores.
      */
-    public function getBestScores(): array;
+    public function getBestScores(int $nbTop = 3): array;
 }
