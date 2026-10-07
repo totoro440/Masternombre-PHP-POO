@@ -38,6 +38,6 @@ docker compose exec web composer install
 ### 3. Accéder au jeu
 Ouvrez votre navigateur internet et rendez-vous à l'adresse suivante :
 👉 **[http://localhost:8080](http://localhost:8080)** 
-*(ou le port configuré dans votre fichier `compose.yaml`)*
+*(ou le port configuré dans votre fichier `compose.yml`)*
 
 ---
