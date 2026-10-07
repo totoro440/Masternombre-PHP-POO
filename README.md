@@ -1,5 +1,4 @@
-# 🎮 Master Nombre - Refonte Architecture Professionnelle
-
+# 🎮 Master Nombre - Refonte fonction -> objet
 Application web du jeu **Master Nombre** (mécanique inspirée du Mastermind/Motus), développée en **PHP** avec une séparation stricte des responsabilités (Logique métier / Présentation).
 
 Projet conçu pour la validation des compétences du dossier professionnel (**RNCP**).
@@ -9,7 +8,7 @@ Projet conçu pour la validation des compétences du dossier professionnel (**RN
 ## 🏗️ Architecture du Projet
 
 Le projet applique les principes fondamentaux de la programmation moderne :
-* **Composants Métiers Purs (`src/Metier/`)** : Logique de calcul des indices (`Mastermind.php`) et arbitrage de la partie (`Partie.php`). Ces classes sont totalement indépendantes de l'affichage HTML et du protocole HTTP.
+* **Composants Métiers Purs (`src/Metier/`)** : Logique de calcul des indices (`Master.php`) et arbitrage de la partie (`Game.php`). Ces classes sont totalement indépendantes de l'affichage HTML et du protocole HTTP.
 * **Moteur de Présentation / Vue (`templates/`)** : Utilisation du moteur de template **Blade** de Laravel de manière autonome pour isoler l'affichage.
 * **Contrôleur (`public/index.php`)** : Point d'entrée unique de l'application gérant les sessions PHP et aiguillant les requêtes.
 * **Gestion des Dépendances** : Configuration et autoloading standardisés via **Composer (PSR-4)**.
