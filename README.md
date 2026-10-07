@@ -26,7 +26,7 @@ Suivez ces étapes pour exécuter et tester l'application localement.
 ### 1. Démarrer les conteneurs Docker
 À la racine du projet, lancez la commande suivante pour monter l'environnement web :
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
 ### 2. Installer les dépendances (Composer)
