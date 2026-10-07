@@ -41,9 +41,3 @@ Ouvrez votre navigateur internet et rendez-vous à l'adresse suivante :
 *(ou le port configuré dans votre fichier `compose.yaml`)*
 
 ---
-
-## 🛠️ Commandes utiles pour le développement
-
-* **Arrêter le jeu** : `docker compose down`
-* **Consulter les logs en temps réel** : `docker compose logs -f`
-* **Vérifier le statut de Git** : `git status`
